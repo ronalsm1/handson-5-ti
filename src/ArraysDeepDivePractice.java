@@ -80,7 +80,7 @@ public class ArraysDeepDivePractice {
         // - Print array jagged dengan menampilkan panjang setiap baris
         System.out.println("Array jagged: ");
         for(int i = 0; i < arrayJagged.length; i++) {
-            System.out.println("Baris " + i + " panjangnya " + arrayJagged[i].length);
+            System.out.print("Baris " + i + " panjangnya " + arrayJagged[i].length + ": ");
             for(int j = 0; j < arrayJagged[i].length; j++) {
                 System.out.print(arrayJagged[i][j] + " ");
             }
@@ -159,7 +159,7 @@ public class ArraysDeepDivePractice {
         // - Gunakan Arrays.fill() untuk mengisi array dengan nilai tertentu
         int[] baru = new int[6];
         Arrays.fill(baru, 12);
-        System.out.println("Array diisi dengan nilai 12: " + Arrays.toString(baru));
+        System.out.println("Array diisi dgn nilai 12: " + Arrays.toString(baru));
 
         // - Gunakan Arrays.equals() untuk membandingkan dua array
         int[] data2 = {1, 2, 3, 5, 8, 9};
@@ -228,7 +228,7 @@ public class ArraysDeepDivePractice {
                 System.out.printf(" %-10d |", nilaiMahasiswa[i][j]);
                 totalNilaiMhs += nilaiMahasiswa[i][j];
             }
-            double rataRata1 = (double) totalNilaiMhs / mataKuliah.length;
+            double rataRata1 = calculateAverage(totalNilaiMhs, mataKuliah.length);
             System.out.printf(" %-10.2f |%n", rataRata1);
 
             // Tentukan mahasiswa dengan nilai tertinggi
@@ -247,25 +247,58 @@ public class ArraysDeepDivePractice {
             for (int i = 0; i < namaMahasiswa.length; i++) {
                 totalNilaiMk += nilaiMahasiswa[i][j];
             }
-            double rataRata2 = (double) totalNilaiMk / nilaiMahasiswa.length;
+            double rataRata2 = calculateAverage(totalNilaiMk, namaMahasiswa.length);
             System.out.printf(" %-10.2f |", rataRata2);
         }
-        System.out.printf(" %-10s |%n", ""); // Kolom Rata-rata Total tidak diisi
+        System.out.printf(" %-10s |%n", "");
         System.out.println("---------------------------------------------------------------------------------------");
 
-        System.out.println("Mahasiswa dengan rata-rata tertinggi: " + mahasiswaTop + " (" + maxRataRata + ")");
+        System.out.println("Mahasiswa dengan nilai tertinggi: " + mahasiswaTop + " (" + maxRataRata + ")");
 
         // - Print dalam format tabel yang rapi
         // Kode ada di atasnya.
 
         // Latihan 9: Game Tic-Tac-Toe sederhana
         // - Buat array 2D char 3x3 untuk papan permainan
+        char[][] papanMain = {
+                {' ', ' ', ' '},
+                {' ', ' ', ' '},
+                {' ', ' ', ' '}
+        };
 
         // - Implementasikan method untuk menampilkan papan
-
-        // - Implementasikan method untuk mengecek apakah ada pemenang
+        System.out.println("Inilah papan mainnya: ");
+        tampilkanPapan(papanMain);
+        System.out.println();
 
         // - Simulasikan beberapa langkah permainan
+        papanMain[2][0] = 'X';
+        System.out.println("X menempati (2,0)");
+        tampilkanPapan(papanMain);
+        System.out.println();
+        papanMain[0][0] = 'O';
+        System.out.println("O menempati (0,0)");
+        tampilkanPapan(papanMain);
+        System.out.println();
+        papanMain[1][1] = 'X';
+        System.out.println("X menempati (1,1)");
+        tampilkanPapan(papanMain);
+        System.out.println();
+        papanMain[1][2] = 'O';
+        System.out.println("O menempati (1,2)");
+        tampilkanPapan(papanMain);
+        System.out.println();
+        papanMain[0][2] = 'X';
+        System.out.println("X menempati (0,2)");
+        tampilkanPapan(papanMain);
+        System.out.println();
+
+        // - Implementasikan method untuk mengecek apakah ada pemenang
+        if(cekPemenang(papanMain) != ' ') {
+            System.out.println("Pemenangnya adalah: " + cekPemenang(papanMain));
+        } else {
+            System.out.println("Belum ada yg menang.");
+        }
     }
 
     // ===== IMPLEMENTASI METHODS =====
@@ -353,12 +386,38 @@ public class ArraysDeepDivePractice {
     }
 
     // Method untuk menghitung rata-rata array
-    public static double calculateAverage(int[] values) {
+    public static double calculateAverage(int total, int panjang) {
         // Implementasi untuk menghitung rata-rata
-        int total = 0;
-        for (int nilai : values) {
-            total += nilai;
+        return (double) total / panjang; // Ganti dengan implementasi yang benar
+    }
+
+    public static void tampilkanPapan(char[][] papan) {
+        for(int i = 0; i < papan.length; i++) {
+            System.out.print(" " + papan[i][0] + " | " + papan[i][1] + " | " + papan[i][2]);
+            if(i < papan.length - 1) {
+                System.out.println("\n---|---|---");
+            }
         }
-        return (double) total / values.length; // Ganti dengan implementasi yang benar
+        System.out.println();
+    }
+
+    public static char cekPemenang(char[][] papan) {
+        for(int i = 0; i < 3; i++) {
+            if(papan[i][0] == papan[i][1] && papan[i][1] == papan[i][2] && papan[i][0] != ' ') {
+                return papan[i][0];
+            }
+        }
+        for(int j = 0; j < 3; j++) {
+            if(papan[0][j] == papan[1][j] && papan[1][j] == papan[2][j] && papan[0][j] != ' ') {
+                return papan[0][j];
+            }
+        }
+        if(papan[0][0] == papan[1][1] && papan[1][1] == papan[2][2] && papan[0][0] != ' ') {
+            return papan[0][0];
+        }
+        if(papan[0][2] == papan[1][1] && papan[1][1] == papan[2][0] && papan[0][2] != ' ') {
+            return papan[0][2];
+        }
+        return ' ';
     }
 }
